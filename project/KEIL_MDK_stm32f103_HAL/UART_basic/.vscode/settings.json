@@ -1,0 +1,22 @@
+{
+    "files.associations": {
+        "usart.h": "c",
+        "driver_mpu6050_interface.h": "c",
+        "driver_ws2812b_interface.h": "c",
+        "vofa.h": "c",
+        "vofa_basic.h": "c",
+        "img.h": "c",
+        "math.h": "c",
+        "vofa_interface.h": "c",
+        "vofa_test.h": "c",
+        "mybutton.h": "c",
+        "mybutton_task.h": "c",
+        "vofa_test_btn.h": "c",
+        "game.h": "c",
+        "multi_button.h": "c",
+        "candle.h": "c",
+        "vofa_protocol_justfloat.h": "c",
+        "algorithm": "c",
+        "sstream": "c"
+    }
+}
