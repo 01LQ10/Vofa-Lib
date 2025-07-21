@@ -8,7 +8,7 @@
 ## 2. 文件结构
 
 ```
-└── Vofa+
+└── Vofa-Lib
     ├── readme.md
     ├── doc (文档)
     ├── src (vofa主体,内置协议)
@@ -21,6 +21,9 @@
     ├── example (使用示例)
         └── vofa_basic
     ├── app (应用实现)
+        ├── Virtual_OLED (虚拟OLED)
+        ├── Virtual_LCD (虚拟LCD)
+        ├── cnadle (蜡烛火焰模拟)
         ├── snake (贪吃蛇)
         └── QR_code (二维码)
     └── project (项目示例)
@@ -29,6 +32,48 @@
 ```
 
 ## 3. 使用方法
+
+1. 声明 vofa 对象
+```c
+vofa_t vofa;
+```
+2. 挂载 数据、图像、控件
+```c
+int a = 0;
+float c = 0;
+double d = 0; 
+// 添加数据
+VOFA_ADD_DATA(square, VOFA_SAMPLE_INT, &a);
+VOFA_ADD_DATA(triang, VOFA_SAMPLE_FLOAT, &b);
+VOFA_ADD_DATA(sin, VOFA_SAMPLE_FLOAT, &c);
+VOFA_ADD_DATA(cos, VOFA_SAMPLE_DOUBLE, &d);
+
+// 添加图片
+vofa_add_image(&vofa_handle, 1, 4608, 48, 48, Format_RGB16, (uint8_t *)gImage_img); 
+
+// 添加控件
+vofa_widget_t my_widget;
+vofa_widget_init(&my_widget, "T", &T);
+vofa_add_widget(&vofa_handle, &my_widget);
+
+```
+3. 挂载 vofa 接口，并初始化
+```c
+memset(&vofa_handle, 0, sizeof(vofa_t)); // 初始化句柄
+vofa_handle.init = vofa_interface_init;  // 挂载接口函数
+vofa_handle.send = vofa_interface_send;
+vofa_handle.recv = vofa_interface_recv;
+
+vofa_handle.protocol = VOFA_PROTOCOL_JUSTFLOAT;
+
+vofa_init(&vofa_handle); // 初始化
+```
+4. 调用 接收处理函数，数据图片发送函数
+```c
+vofa_handle.recv_handle(&vofa_handle);
+vofa_send_samples(&vofa_handle);
+vofa_send_image(&vofa_handle);
+```
 
 
 ## 4. 版本特性
@@ -60,9 +105,6 @@ Image {
 }
 ```
 
-问题记录
+## 待优化列表
 
-
-处理函数无延时时，无法运行
-输入数据过快时，环形缓冲区指针溢出，触发hardfault
-优化方向：增强环形缓冲区的数据同步性
+- [ ] 处理函数无延时时，无法运行。输入数据过快时，环形缓冲区指针溢出，触发hardfault。优化方向：增强环形缓冲区的数据同步性
